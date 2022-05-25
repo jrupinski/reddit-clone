@@ -70,9 +70,10 @@ group :development do
   # useful gems
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'rubocop'
-  gem 'spring-commands-rspec'
   gem 'guard-rspec'
+  gem 'rubocop'
+  gem 'solargraph'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
