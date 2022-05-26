@@ -1,0 +1,21 @@
+<% method = user.persisted? ? 'PUT' : 'POST' %>
+<% action = user.persisted? ? user_path(user) : users_path %>
+<% button_value = user.persisted? ? 'Update' : 'Create' %>
+
+<form action='<%= action %>' method='POST'>
+  <input type='hidden' name='_method' value = <%= method %>>
+
+  <label for='user_username'>Username</label>
+  <input type='text' id='user_username' name='user[username]' value='<%= user.username %>'>
+  <br>
+
+  <label for='user_email'>email</label>
+  <input type='text' id='user_email' name='user[email]' value='<%= user.email %>'>
+  <br>
+
+  <label for='user_password'>password</label>
+  <input type='text' id='user_password' name='user[password]' placeholder='******'>
+  <br>
+
+  <button action='submit'><%= button_value %></button>
+</form>
