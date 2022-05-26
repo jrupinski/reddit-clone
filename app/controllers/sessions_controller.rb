@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  before_action :require_no_current_user!, only: %i[new create]
+  before_action :require_current_user!, only: %i[destroy]
+
   def new
     @user = User.new
   end

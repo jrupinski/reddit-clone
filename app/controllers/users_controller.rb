@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :require_current_user!, only: %i[show edit update destroy]
+  before_action :require_no_current_user!, only: %i[new create]
+
   def show
     @user = User.find(params[:id])
   end
@@ -11,7 +14,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      # login_user!(user)
+      login_user!(@user)
       redirect_to user_path(@user)
     else
       flash.now[:errors] = @user.errors.full_messages
