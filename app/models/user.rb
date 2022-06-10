@@ -6,6 +6,8 @@ class User < ApplicationRecord
   before_validation :ensure_session_token
 
   has_many :posts, inverse_of: :author, foreign_key: :author_id
+  has_many :subs, inverse_of: :moderator, foreign_key: :moderator_id
+
 
   attr_reader :password
 

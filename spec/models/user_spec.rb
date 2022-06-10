@@ -17,6 +17,7 @@ RSpec.describe User, type: :model do
 
   context 'associations' do
     it { should have_many(:posts) }
+    it { should have_many(:subs) }
   end
 
   it 'creates a password when given a password string' do
