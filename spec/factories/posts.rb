@@ -4,6 +4,9 @@ FactoryBot.define do
     url { Faker::Internet.url }
     content { Faker::Lorem.paragraph }
     author factory: :user
-    sub
+
+    before(:create) do |post|
+      post.subs << build(:post_sub, post:).sub
+    end
   end
 end

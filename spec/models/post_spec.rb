@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Post, type: :model do
   context 'associations' do
     it { should belong_to(:author) }
-    it { should belong_to(:sub) }
+    it { should have_many(:post_subs) }
+    it { should have_many(:subs).through(:post_subs) }
   end
 
   context 'validations' do
