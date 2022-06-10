@@ -11,9 +11,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
-    @post.sub = Sub.find(post_params[:sub_id])
-    @post.author = current_user
+    @post = current_user.posts.new(post_params)
 
     if @post.save
       redirect_to post_path(@post)
@@ -43,7 +41,7 @@ class PostsController < ApplicationController
 
     if @post.destroy
       flash[:notice] = 'Post deleted!'
-      redirect_to sub_path(@post.sub)
+      redirect_to user_path(current_user)
     else
       flash.now[:errors] = @post.errors.full_messages
       render :show
@@ -53,11 +51,11 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :url, :content, :sub_id)
+    params.require(:post).permit(:title, :url, :content, :user_id, sub_ids: [])
   end
 
   def require_author!
     post = Post.find(params[:id])
-    redirect_to sub_path(post.sub) unless current_user == post.author
+    redirect_to user_path(current_user) unless current_user == post.author
   end
 end
