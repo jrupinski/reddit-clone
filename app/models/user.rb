@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   before_validation :ensure_session_token
 
+  has_many :posts, inverse_of: :author, foreign_key: :author_id
+
   attr_reader :password
 
   def password=(password)
@@ -14,7 +16,7 @@ class User < ApplicationRecord
   end
 
   def is_password?(password)
-    password_hashed = BCrypt::Password.new(self.password_digest)
+    password_hashed = BCrypt::Password.new(password_digest)
     password_hashed.is_password?(password)
   end
 
@@ -24,8 +26,8 @@ class User < ApplicationRecord
 
   def reset_session_token!
     self.session_token = self.class.generate_session_token
-    self.save!
-    self.session_token
+    save!
+    session_token
   end
 
   def ensure_session_token

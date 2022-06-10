@@ -15,6 +15,10 @@ RSpec.describe User, type: :model do
     it { should validate_length_of(:password).is_at_least(6) }
   end
 
+  context 'associations' do
+    it { should have_many(:posts) }
+  end
+
   it 'creates a password when given a password string' do
     new_user = build(:user, password: 'password')
     expect(new_user.password_digest).to_not be_nil
