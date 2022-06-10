@@ -10,18 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_08_084928) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_09_094636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "post_subs", force: :cascade do |t|
+    t.bigint "sub_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_subs_on_post_id"
+    t.index ["sub_id", "post_id"], name: "index_post_subs_on_sub_id_and_post_id", unique: true
+    t.index ["sub_id"], name: "index_post_subs_on_sub_id"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
     t.string "url"
     t.text "content"
-    t.bigint "sub_id", null: false
     t.bigint "author_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "sub_id", null: false
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["sub_id"], name: "index_posts_on_sub_id"
   end
@@ -47,6 +57,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_08_084928) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "post_subs", "posts"
+  add_foreign_key "post_subs", "subs"
   add_foreign_key "posts", "subs"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "subs", "users", column: "moderator_id"
