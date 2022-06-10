@@ -2,10 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   let(:existing_user) { create(:user) }
-  let(:sub) { create(:sub) }
+  let(:subs) { create_list(:sub, 3) }
 
   describe 'POST #create' do
-
     context 'when logged in' do
       # hacky login
       before(:each) do
@@ -14,7 +13,7 @@ RSpec.describe "Posts", type: :request do
 
       it 'redirects to created post' do
         new_post = build(:post)
-        post posts_path, params: { post: { title: new_post.title, url: new_post.url, content: new_post.content, sub_id: sub.id } }
+        post posts_path, params: { post: { title: new_post.title, url: new_post.url, content: new_post.content, sub_ids: subs.pluck(:id) } }
         expect(response).to redirect_to(post_path(Post.last))
         expect(Post.last.title).to eq(new_post.title)
       end
@@ -23,14 +22,14 @@ RSpec.describe "Posts", type: :request do
     context 'when not logged it' do
       it 'redirects to login page' do
         new_post = build(:post)
-        post posts_path, params: { post: { title: new_post.url, url: new_post.url, content: new_post.content, sub_id: sub.id } }
+        post posts_path, params: { post: { title: new_post.url, url: new_post.url, content: new_post.content, sub_ids: subs.pluck(:id) } }
         expect(response).to redirect_to(new_session_path)
       end
     end
   end
 
   describe 'PATCH #edit' do
-    let(:existing_post) { create(:post, author: existing_user, sub:) }
+    let(:existing_post) { create(:post, author: existing_user, sub_ids: subs.pluck(:id)) }
 
     context 'when logged in as author' do
       # hacky login
@@ -51,9 +50,9 @@ RSpec.describe "Posts", type: :request do
         post session_path, params: { user: { username: different_user.username, password: different_user.password } }
       end
 
-      it 'Does not allow editing, redirects to sub#show' do
+      it 'Does not allow editing, redirects to user profile' do
         patch post_path(existing_post), params: { post: { email: 'new_email@example.com' } }
-        expect(response).to redirect_to(sub_path(sub))
+        expect(response).to redirect_to(user_path(different_user))
       end
     end
 
@@ -66,7 +65,7 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe 'DELETE #destroy' do
-    let(:existing_post) { create(:post, author: existing_user, sub:) }
+    let(:existing_post) { create(:post, author: existing_user, sub_ids: subs.pluck(:id)) }
 
     context 'when logged in as author' do
       # hacky login
@@ -74,9 +73,9 @@ RSpec.describe "Posts", type: :request do
         post session_path, params: { user: { username: existing_user.username, password: existing_user.password } }
       end
 
-      it 'deletes post and redirects to sub#show' do
+      it 'deletes post and redirects to user profile' do
         delete post_path(existing_post)
-        expect(response).to redirect_to(sub_path(sub))
+        expect(response).to redirect_to(user_path(existing_user))
       end
     end
 
@@ -87,9 +86,9 @@ RSpec.describe "Posts", type: :request do
         post session_path, params: { user: { username: different_user.username, password: different_user.password } }
       end
 
-      it 'Does not delete post, redirects to sub#show' do
+      it 'Does not delete post, redirects to user profile' do
         delete post_path(existing_post)
-        expect(response).to redirect_to(sub_path(sub))
+        expect(response).to redirect_to(user_path(different_user))
       end
     end
 
