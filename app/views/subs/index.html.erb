@@ -1,0 +1,7 @@
+Available subs
+
+<ul>
+  <% subs.each do |sub| %>
+    <li><%=link_to sub.title, sub_path(sub) %></li>
+  <% end %>
+</ul>

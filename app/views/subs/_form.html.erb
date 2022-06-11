@@ -1,0 +1,17 @@
+<% method = sub.persisted? ? 'PUT' : 'POST' %>
+<% action = sub.persisted? ? sub_path(sub) : subs_path %>
+<% button_value = sub.persisted? ? 'Update' : 'Create' %>
+
+<form action='<%= action %>' method='POST'>
+  <input type='hidden' name='_method' value = <%= method %>>
+
+  <label for='sub_subname'>Title</label>
+  <input type='text' id='sub_title' name='sub[title]' value='<%= sub.title %>'>
+  <br>
+
+  <label for='sub_description'>Description</label>
+  <input type='textbox' id='sub_description' name='sub[description]' value='<%= sub.description %>'>
+  <br>
+
+  <button action='submit'><%= button_value %></button>
+</form>
