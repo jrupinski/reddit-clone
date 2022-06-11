@@ -3,15 +3,20 @@ class SubsController < ApplicationController
   before_action :require_moderator!, only: %i[edit update destroy]
 
   def index
-    @sub = Sub.all
+    @subs = Sub.all
+    render :index, locals: { subs: @subs}
   end
 
   def show
     @sub = Sub.find(params[:id])
+    posts = @sub.posts
+
+    render :show, locals: { posts:, sub: @sub }
   end
 
   def new
     @sub = Sub.new
+    render :new
   end
 
   def create
