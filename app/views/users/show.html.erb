@@ -8,3 +8,11 @@ User profile
 <p>
   email: <%= @user.email %>
 </p>
+<p>
+  Subs moderated by user:
+  <ul>
+    <% @user.subs.each do |sub| %>
+      <li><%= link_to sub.title, sub_path(sub) %></li>
+    <% end %>
+  </ul>
+</p>
