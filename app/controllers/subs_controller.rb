@@ -11,7 +11,7 @@ class SubsController < ApplicationController
     @sub = Sub.find(params[:id])
     posts = @sub.posts
 
-    render :show, locals: { posts:, sub: @sub }
+    render :show, locals: { sub: @sub, posts: }
   end
 
   def new
