@@ -4,4 +4,5 @@ class Sub < ApplicationRecord
   has_many :posts, through: :post_subs
 
   validates :title, :description, presence: true
+  validates :title, uniqueness: true
 end
