@@ -1,24 +1,18 @@
-# README
+# Reddit Clone
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Reddit On Rails - An App Academy project to create a Rails clone of Reddit.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- User authentication (not using secure_password and devise as part of assignment)
+- Moderated sub(reddit)s
+- Cross-sub posts
+- Nested comments
+- Upvote/downvote per post and per comment
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Learning Goals (pasted from the [assignment](https://open.appacademy.io/learn/full-stack-online/rails/redditclone))
+- Be able to write auth from scratch without looking at previous solutions
+- Know how to use a before_action to manage user access to resources
+- Be able to write Rails models, controllers, and views quickly
+- Know when to use regular associations and when to use join tables
+- Know how to avoid N+1 queries
