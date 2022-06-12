@@ -5,5 +5,4 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   validates :title, :subs, presence: true
-  validates %i[title sub], uniqueness: true
 end
