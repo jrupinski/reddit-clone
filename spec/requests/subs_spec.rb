@@ -12,16 +12,16 @@ RSpec.describe "Subs", type: :request do
 
       it 'redirects to created sub' do
         new_sub = build(:sub)
-        post subs_path, params: { sub: { title: new_sub.title, description: new_sub.description } }
+        post subs_path, params: { sub: { name: new_sub.name, description: new_sub.description } }
         expect(response).to redirect_to(sub_path(Sub.last))
-        expect(Sub.last.title).to eq(new_sub.title)
+        expect(Sub.last.name).to eq(new_sub.name)
       end
     end
 
     context 'when not logged it' do
       it 'redirects to login page' do
         new_sub = build(:sub)
-        post subs_path, params: { sub: { title: new_sub.title, description: new_sub.description } }
+        post subs_path, params: { sub: { name: new_sub.name, description: new_sub.description } }
         expect(response).to redirect_to(new_session_path)
       end
     end

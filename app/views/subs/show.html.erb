@@ -1,5 +1,5 @@
 <%= button_to 'Back to sub list', subs_path, method: :get %>
-<h1><%= sub.title %></h1>
+<h1><%= sub.name %></h1>
 <p>Description: <%= sub.description%></p>
 <p>Moderator: <%= sub.moderator.username %></p>
 
@@ -9,6 +9,6 @@
 <% end %>
 <ul>
   <% posts.each do |post| %>
-    <li><%=link_to post.title, post_path(post) %></li>
+    <li><%=link_to post.name, post_path(post) %></li>
   <% end %>
 </ul>

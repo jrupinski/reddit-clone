@@ -60,7 +60,7 @@ class SubsController < ApplicationController
   private
 
   def sub_params
-    params.require(:sub).permit(:title, :description, :moderator_id)
+    params.require(:sub).permit(:name, :description, :moderator_id)
   end
 
   def require_moderator!
