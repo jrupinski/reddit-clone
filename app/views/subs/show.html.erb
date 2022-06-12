@@ -7,8 +7,13 @@
   <%= button_to 'Edit sub', edit_sub_path(sub), method: :get %>
   <%= button_to 'Delete sub', sub_path(sub), method: :delete %>
 <% end %>
+<%= button_to 'New post', new_post_path, method: :get %>
+
 <ul>
   <% posts.each do |post| %>
-    <li><%=link_to post.name, post_path(post) %></li>
+    <li><%=link_to post.title, post_path(post) %></li>
+    <% if sub.moderator == current_user || post.author == current_user %>
+      <%= button_to 'Delete post', post_path(post), method: :delete %>
+    <% end%>
   <% end %>
 </ul>

@@ -1,0 +1,8 @@
+Available posts
+<%= button_to 'New post', new_post_path, method: :get %>
+
+<ul>
+  <% posts.each do |post| %>
+    <li><%=link_to post.name, post_path(post) %></li>
+  <% end %>
+</ul>
