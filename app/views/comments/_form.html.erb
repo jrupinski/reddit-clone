@@ -1,0 +1,14 @@
+<% method = comment.persisted? ? 'PUT' : 'POST' %>
+<% action = comment.persisted? ? comment_path(comment) : comments_path %>
+<% button_value = comment.persisted? ? 'Update' : 'Create' %>
+
+<form action='<%= action %>' method='POST'>
+  <input type='hidden' name='_method' value = <%= method %>>
+  <input type='hidden' name='[comment]post_id' value = <%= comment.post_id %>>
+
+  <label for='comment_content'>Content:</label>
+  <textarea id='comment_content' name='comment[content]'><%= comment.content %></textarea>
+  <br>
+
+  <button action='comment'><%= button_value %></button>
+</form>

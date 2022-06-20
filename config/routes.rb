@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   resources :users
   resources :subs
-  resources :posts, except: :index
+  resources :posts, except: :index do
+    resources :comments, only: :new
+  end
+  resources :comments, except: %i[new index]
   resource :session, only: %i[new create destroy]
 end

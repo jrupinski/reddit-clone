@@ -15,3 +15,21 @@
   <%= button_to 'Edit post', edit_post_path(@post), method: :get %>
   <%= button_to 'Delete post', post_path(@post), method: :delete %>
 <% end %>
+
+<p>
+  <b>Comments</b>
+  <br>
+  <%= link_to 'Add comment', new_post_comment_path(@post) %>
+
+  <ul>
+    <% @post.comments&.each do |comment| %>
+      <li>
+        <%= comment.content %>
+        <% if comment.author == current_user %>
+          <%= button_to 'Edit comment', edit_comment_path(comment), method: :get %>
+          <%= button_to 'Delete comment', comment_path(comment), method: :delete %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</p>
