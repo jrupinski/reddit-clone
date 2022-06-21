@@ -1,4 +1,4 @@
-<%= button_to 'Back to post list', posts_path, method: :get %>
+<%= button_to 'Back to sub', :back, fallback_location: subs_path, method: :get %>
 <p>Title: <%= @post.title %></p>
 <p>Url: <%= @post.url %></p>
 <p>Content: <%= @post.content %></p>

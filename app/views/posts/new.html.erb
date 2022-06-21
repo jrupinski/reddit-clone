@@ -1,4 +1,4 @@
-<%= button_to 'Back to avaliable posts', posts_path, method: :get %>
+<%= button_to 'Back to sub', :back, fallback_location: subs_path, method: :get %>
 Create new post
 
 <%= render 'form', post: @post %>
