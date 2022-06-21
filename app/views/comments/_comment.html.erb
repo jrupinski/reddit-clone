@@ -16,13 +16,15 @@
     <% end %>
   </div>
 
-  <% if child_comments.present? %>
-    <% child_comments.each do |parent_comment| %>
-      <% child_comments = @all_comments.where(parent_comment_id: parent_comment.id) %>
 
-      <ul style="list-style-type: none;">
-        <li><%= render 'comments/comment', comment: parent_comment, child_comments: child_comments %></li>
-      </ul>
-    <% end %>
-  <% end%>
+  <% comments_by_parent[comment.id].each do |child_comment| %>
+    <ul style="list-style-type: none;">
+      <li>
+        <%= render 'comments/comment',
+            comment: child_comment,
+            comments_by_parent: comments_by_parent
+        %>
+      </li>
+    </ul>
+  <% end %>
 </div>

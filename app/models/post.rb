@@ -9,4 +9,20 @@ class Post < ApplicationRecord
   def top_level_comments
     comments.where(parent_comment_id: nil)
   end
+
+  #
+  # Returns a hash of comments, and the parent comment they are assigned to.
+  # Equals better performance than scanning through each comment and children of these (hash lookup is around O(1)).
+  #
+  # @return [Hash] Keys of parent_comment_id, Values of Comments
+  #
+  def comments_by_parent
+    comments_by_parent = Hash.new { |hash, key| hash[key] = [] }
+
+    comments.includes(:author).each do |comment|
+      comments_by_parent[comment.parent_comment_id] << comment
+    end
+
+    comments_by_parent
+  end
 end
