@@ -16,8 +16,8 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to post_path(@comment.post)
     else
-      flash.now[:errors] = @comment.errors.full_messages
-      render :new
+      flash[:errors] = @comment.errors.full_messages
+      redirect_to post_path(@comment.post)
     end
   end
 
@@ -31,8 +31,8 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params)
       redirect_to post_path(@comment.post)
     else
-      flash.now[:errors] = @comment.errors.full_messages
-      render :edit
+      flash[:errors] = @comment.errors.full_messages
+      redirect_to edit_comment_path(@comment)
     end
   end
 
@@ -43,8 +43,8 @@ class CommentsController < ApplicationController
       flash[:notice] = 'Comment deleted!'
       redirect_to post_path(@comment.post)
     else
-      flash.now[:errors] = @comment.errors.full_messages
-      render :show
+      flash[:errors] = @comment.errors.full_messages
+      redirect_to comment_path(@comment)
     end
   end
 

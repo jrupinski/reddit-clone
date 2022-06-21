@@ -15,7 +15,7 @@ RSpec.describe 'Sessions', type: :request do
       context 'when invalid credentials' do
         it 'redirects to login page' do
           post session_path, params: { user: { username: user.username, password: 'invalid_password' } }
-          expect(response).not_to redirect_to(new_session_path)
+          expect(response).to redirect_to(new_session_path)
         end
       end
     end

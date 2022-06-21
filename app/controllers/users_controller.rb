@@ -17,8 +17,8 @@ class UsersController < ApplicationController
       login_user!(@user)
       redirect_to user_path(@user)
     else
-      flash.now[:errors] = @user.errors.full_messages
-      render :new
+      flash[:errors] = @user.errors.full_messages
+      redirect_to new_user_path
     end
   end
 
@@ -32,8 +32,8 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to user_path(@user)
     else
-      flash.now[:errors] = @user.errors.full_messages
-      render :new
+      flash[:errors] = @user.errors.full_messages
+      redirect_to edit_user_path(@user)
     end
   end
 

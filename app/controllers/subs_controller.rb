@@ -11,11 +11,7 @@ class SubsController < ApplicationController
     @sub = Sub.find(params[:id])
     # Very deliberate edge case for avoiding n+1 queries while logged out
     # AND avoiding unnecessary eager loading while logged in
-    posts = if current_user
-              @sub.posts
-            else
-              @sub.posts.includes(:author)
-            end
+    posts = @sub.posts.includes(:author)
 
     render :show, locals: { sub: @sub, posts: }
   end
@@ -31,8 +27,8 @@ class SubsController < ApplicationController
     if @sub.save
       redirect_to sub_path(@sub)
     else
-      flash.now[:errors] = @sub.errors.full_messages
-      render :new
+      flash[:errors] = @sub.errors.full_messages
+      redirect_to new_sub_path
     end
   end
 
@@ -46,8 +42,8 @@ class SubsController < ApplicationController
     if @sub.update(sub_params)
       redirect_to sub_path(@sub)
     else
-      flash.now[:errors] = @sub.errors.full_messages
-      render :new
+      flash[:errors] = @sub.errors.full_messages
+      redirect_to edit_sub_path(@sub)
     end
   end
 
@@ -58,7 +54,7 @@ class SubsController < ApplicationController
       flash[:notice] = 'Sub deleted!'
       redirect_to subs_path
     else
-      flash.now[:errors] = @sub.errors.full_messages
+      flash[:errors] = @sub.errors.full_messages
       redirect_to sub_path(@sub)
     end
   end

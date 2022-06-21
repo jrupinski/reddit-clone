@@ -17,8 +17,8 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to post_path(@post)
     else
-      flash.now[:errors] = @post.errors.full_messages
-      render :new
+      flash[:errors] = @post.errors.full_messages
+      redirect_to new_post_path
     end
   end
 
@@ -32,8 +32,8 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to post_path(@post)
     else
-      flash.now[:errors] = @post.errors.full_messages
-      render :edit
+      flash[:errors] = @post.errors.full_messages
+      redirect_to edit_post_path(@post)
     end
   end
 
@@ -44,8 +44,8 @@ class PostsController < ApplicationController
       flash[:notice] = 'Post deleted!'
       redirect_to user_path(current_user)
     else
-      flash.now[:errors] = @post.errors.full_messages
-      render :show
+      flash[:errors] = @post.errors.full_messages
+      redirect_to post_path(@post)
     end
   end
 
