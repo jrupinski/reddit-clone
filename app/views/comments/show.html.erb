@@ -11,3 +11,8 @@
     <% end %>
   </ul>
 </div>
+
+<div>
+  <p>Reply:</p>
+  <%= render 'form', parent_comment: @comment, comment: Comment.new %>
+</div>
