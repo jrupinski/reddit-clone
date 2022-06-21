@@ -1,6 +1,7 @@
 <% parent_comments = @post.comments.where(parent_comment_id: nil) %>
 
 <%= button_to 'Back to sub', :back, fallback_location: subs_path, method: :get %>
+<p>Author: <%= link_to @post.author.username, user_path(@post.author) %></p>
 <p>Title: <%= @post.title %></p>
 <p>Url: <%= @post.url %></p>
 <p>Content: <%= @post.content %></p>
@@ -11,16 +12,18 @@
     <% end %>
   </ul>
 </p>
-<p>Author: <%= @post.author.username %></p>
 
 <% if @post.author == current_user %>
   <%= button_to 'Edit post', edit_post_path(@post), method: :get %>
   <%= button_to 'Delete post', post_path(@post), method: :delete %>
 <% end %>
 
+<div style="border-style: dashed; display: inline-block; padding: 10px 10px 10px 10px;">
+  <p>Add comment:</p>
+  <%= render 'comments/form', comment: @post.comments.new, parent_comment: nil %>
+</div>
 
 <p><b><%= "Comments(#{@post.comments.count})"%></b></p>
-<%= link_to 'Add comment', new_post_comment_path(@post) %>
 
 <p>
   <% parent_comments.each do |comment| %>
