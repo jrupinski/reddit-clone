@@ -1,15 +1,22 @@
-<%= button_to 'Home', root_path, method: :get %>
-<% if current_user %>
-  <% unless current_page?(user_path(current_user)) %>
-    <%= button_to 'User profile', user_path(current_user), method: :get %>
+<div style = "
+  border-style: outset;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  background-color: lightgrey;
+">
+  <%= button_to 'Home', root_path, method: :get %>
+  <% if current_user %>
+    <% unless current_page?(user_path(current_user)) %>
+      <%= button_to 'User profile', user_path(current_user), method: :get %>
+    <% end %>
+    <%= button_to 'Logout', session_path, method: :delete %>
+  <% else %>
+    <% unless current_page?(new_user_path) %>
+      <%= button_to 'Register', new_user_path, method: :get %>
+      <% end %>
+    <% unless current_page?(new_session_path) %>
+      <%= button_to 'Login', new_session_path, method: :get %>
+      <% end %>
   <% end %>
-  <br>
-  <%= button_to 'Logout', session_path, method: :delete %>
-<% else %>
-  <% unless current_page?(new_user_path) %>
-    <%= button_to 'Register', new_user_path, method: :get %>
-    <% end %>
-  <% unless current_page?(new_session_path) %>
-    <%= button_to 'Login', new_session_path, method: :get %>
-    <% end %>
-<% end %>
+</div>
