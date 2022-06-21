@@ -16,3 +16,21 @@ User profile
     <% end %>
   </ul>
 </p>
+
+<p>
+  Posts by user:
+  <ul>
+    <% @user.posts.each do |post| %>
+      <li><%= link_to post.title, post_path(post) %></li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
+  Comments by user:
+  <ul>
+    <% @user.comments.each do |comment| %>
+      <li><%= link_to comment.content, comment_path(comment) %></li>
+    <% end %>
+  </ul>
+</p>

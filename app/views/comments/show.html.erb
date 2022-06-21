@@ -1,9 +1,9 @@
 <div>
   <p>
-    <%= button_to 'Back to post', :back, fallback_location: post_path(@comment.post), method: :get %>
+    <%= button_to 'Back to post', post_path(@comment.post), method: :get %>
   </p>
 
-  <%= render 'comments/comment', comment: @comment, child_comments: nil %>
+  <%= render 'comments/comment', comment: @comment, comments_by_parent: @comment.post.comments_by_parent %>
 </div>
 
 <div>
