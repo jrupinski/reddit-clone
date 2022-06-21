@@ -20,16 +20,8 @@
   <b>Comments</b>
   <br>
   <%= link_to 'Add comment', new_post_comment_path(@post) %>
-
-  <ul>
-    <% @post.comments&.each do |comment| %>
-      <li>
-        <%= comment.content %>
-        <% if comment.author == current_user %>
-          <%= button_to 'Edit comment', edit_comment_path(comment), method: :get %>
-          <%= button_to 'Delete comment', comment_path(comment), method: :delete %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
 </p>
+
+  <% @post.comments&.each do |comment| %>
+    <%= render 'comments/comment', comment: comment %>
+  <% end %>

@@ -1,0 +1,13 @@
+<div>
+  <div style="border-style: dotted; padding: 5px; margin-bottom: 15px;">
+    <p><b>Author:</b> <%= comment.author.username %></p>
+    <textarea disabled= 'true', style="resize: none; width: 80%; height: 100px;"><%= comment.content %></textarea>
+
+    <% if comment.author == current_user %>
+      <ul style="list-style-type: none; padding: 0; margin-top: 10px; display: flex">
+        <li style= "padding-right: 5px"><%= button_to 'Edit comment', edit_comment_path(comment), method: :get %></li>
+        <li><%= button_to 'Delete comment', comment_path(comment), method: :delete %></li>
+      <ul>
+    <% end %>
+  </div>
+</div>
