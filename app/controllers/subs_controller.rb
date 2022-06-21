@@ -4,12 +4,18 @@ class SubsController < ApplicationController
 
   def index
     @subs = Sub.all
-    render :index, locals: { subs: @subs}
+    render :index, locals: { subs: @subs }
   end
 
   def show
     @sub = Sub.find(params[:id])
-    posts = @sub.posts
+    # Very deliberate edge case for avoiding n+1 queries while logged out
+    # AND avoiding unnecessary eager loading while logged in
+    posts = if current_user
+              @sub.posts
+            else
+              @sub.posts.includes(:author)
+            end
 
     render :show, locals: { sub: @sub, posts: }
   end

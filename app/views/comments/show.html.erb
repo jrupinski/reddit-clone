@@ -3,10 +3,10 @@
     <%= button_to 'Back to post', :back, fallback_location: post_path(@comment.post), method: :get %>
   </p>
 
-  <%= render 'comments/comment', comment: @comment %>
+  <%= render 'comments/comment', comment: @comment, child_comments: nil %>
 </div>
 
 <div>
-  <p>Reply:</p>
+  <p>Reply to this comment:</p>
   <%= render 'form', parent_comment: @comment, comment: Comment.new %>
 </div>

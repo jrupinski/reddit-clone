@@ -24,13 +24,11 @@
 <p><b><%= "Comments(#{@post.comments.count})"%></b></p>
 
 <p>
-  <% @post.top_level_comments.each do |comment| %>
-    <%= render 'comments/comment', comment: comment %>
+  <% @all_comments.where.not(parent_comment_id: nil).each do |top_level_comment| %>
 
+    <% child_comments = @all_comments.where(parent_comment_id: top_level_comment.id) %>
     <ul style="list-style-type: none;">
-      <% comment.child_comments.each do |child_comment| %>
-        <li><%= render 'comments/comment', comment: child_comment %></li>
-      <% end %>
+      <li><%= render 'comments/comment', comment: top_level_comment, child_comments: child_comments %></li>
     </ul>
   <% end %>
-<p>
+</p>

@@ -16,9 +16,13 @@
     <% end %>
   </div>
 
-    <ul style="list-style-type: none;">
-      <% comment.child_comments.each do |child_comment| %>
-        <li><%= render 'comments/comment', comment: child_comment %></li>
-      <% end %>
-    </ul>
+  <% if child_comments.present? %>
+    <% child_comments.each do |parent_comment| %>
+      <% child_comments = @all_comments.where(parent_comment_id: parent_comment.id) %>
+
+      <ul style="list-style-type: none;">
+        <li><%= render 'comments/comment', comment: parent_comment, child_comments: child_comments %></li>
+      </ul>
+    <% end %>
+  <% end%>
 </div>
