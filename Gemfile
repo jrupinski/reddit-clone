@@ -74,6 +74,7 @@ group :development do
   gem 'rubocop'
   gem 'solargraph'
   gem 'spring-commands-rspec'
+  gem 'bullet'
 end
 
 group :test do
