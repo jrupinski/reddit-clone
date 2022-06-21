@@ -4,26 +4,32 @@
 <p>Title: <%= @post.title %></p>
 <p>Url: <%= @post.url %></p>
 <p>Content: <%= @post.content %></p>
-<p>Author: <%= @post.author.username %></p>
-<p>Posted in Subs:
+<p>Cross-posted in Subs:
   <ul>
     <% @post.sub_ids.each do |sub_id| %>
       <li><%=link_to Sub.find(sub_id).name, sub_path(Sub.find(sub_id)) %></li>
     <% end %>
   </ul>
 </p>
+<p>Author: <%= @post.author.username %></p>
 
 <% if @post.author == current_user %>
   <%= button_to 'Edit post', edit_post_path(@post), method: :get %>
   <%= button_to 'Delete post', post_path(@post), method: :delete %>
 <% end %>
 
-<p>
-  <b>Comments</b>
-  <br>
-  <%= link_to 'Add comment', new_post_comment_path(@post) %>
-</p>
 
+<p><b><%= "Comments(#{@post.comments.count})"%></b></p>
+<%= link_to 'Add comment', new_post_comment_path(@post) %>
+
+<p>
   <% parent_comments.each do |comment| %>
     <%= render 'comments/comment', comment: comment %>
+
+    <ul style="list-style-type: none;">
+      <% comment.child_comments.each do |child_comment| %>
+        <li><%= render 'comments/comment', comment: child_comment %></li>
+      <% end %>
+    </ul>
   <% end %>
+<p>
