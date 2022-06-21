@@ -1,5 +1,3 @@
-<% parent_comments = @post.comments.where(parent_comment_id: nil) %>
-
 <%= button_to 'Back to sub', :back, fallback_location: subs_path, method: :get %>
 <p>Author: <%= link_to @post.author.username, user_path(@post.author) %></p>
 <p>Title: <%= @post.title %></p>
@@ -26,7 +24,7 @@
 <p><b><%= "Comments(#{@post.comments.count})"%></b></p>
 
 <p>
-  <% parent_comments.each do |comment| %>
+  <% @post.top_level_comments.each do |comment| %>
     <%= render 'comments/comment', comment: comment %>
 
     <ul style="list-style-type: none;">
