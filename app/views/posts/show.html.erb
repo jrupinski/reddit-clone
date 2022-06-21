@@ -1,4 +1,4 @@
-<%= button_to 'Back to sub', :back, fallback_location: subs_path, method: :get %>
+<%= button_to 'Back to subs list', subs_path, method: :get %>
 <p>Author: <%= link_to @post.author.username, user_path(@post.author) %></p>
 <p>Title: <%= @post.title %></p>
 <p>Url: <%= @post.url %></p>

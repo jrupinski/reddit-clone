@@ -1,7 +1,7 @@
-<%= button_to 'Back to sub list', subs_path, method: :get %>
+<%= button_to 'Back to subs list', subs_path, method: :get %>
 <h1><%= sub.name %></h1>
 <p>Description: <%= sub.description%></p>
-<p>Moderator: <%= sub.moderator.username %></p>
+<p>Moderator: <%= link_to sub.moderator.username, user_path(sub.moderator) %></p>
 
 <% if sub.moderator == current_user %>
   <%= button_to 'Edit sub', edit_sub_path(sub), method: :get %>
