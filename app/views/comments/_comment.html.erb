@@ -8,7 +8,7 @@
     <textarea disabled= 'true', style="resize: none; width: 80%; height: 100px;"><%= comment.content %></textarea>
 
     <ul style="list-style-type: none; padding: 0; margin-top: 10px; display: flex">
-      <li style= "padding-right: 5px"><%= button_to "Reply / Show (#{child_comments_count} child comments)", comment_path(comment), method: :get %></li>
+      <li style= "padding-right: 5px"><%= button_to "Reply", comment_path(comment), method: :get %></li>
 
     <% if comment.author == current_user %>
         <li style= "padding-right: 5px"><%= button_to 'Edit comment', edit_comment_path(comment), method: :get %></li>
@@ -16,4 +16,10 @@
       <ul>
     <% end %>
   </div>
+
+    <ul style="list-style-type: none;">
+      <% comment.child_comments.each do |child_comment| %>
+        <li><%= render 'comments/comment', comment: child_comment %></li>
+      <% end %>
+    </ul>
 </div>
