@@ -1,4 +1,4 @@
 <%= button_to 'Back to post', post_path(@comment.post), method: :get %>
-Create new post
+Create new comment
 
-<%= render 'form', comment: @comment %>
+<%= render 'form', comment: @comment, parent_comment: @parent_comment %>

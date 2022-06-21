@@ -4,7 +4,8 @@
 
 <form action='<%= action %>' method='POST'>
   <input type='hidden' name='_method' value = <%= method %>>
-  <input type='hidden' name='[comment]post_id' value = <%= comment.post_id %>>
+  <input type='hidden' name='[comment]post_id' value = <%= comment.post_id || parent_comment.post_id %>>
+  <input type='hidden' name='[comment]parent_comment_id' value = <%= parent_comment&.id %>>
 
   <label for='comment_content'>Content:</label>
   <textarea id='comment_content' name='comment[content]'><%= comment.content %></textarea>

@@ -2,6 +2,10 @@ class CommentsController < ApplicationController
   before_action :require_current_user!, only: %i[new create edit update destroy]
   before_action :require_author!, only: %i[edit update destroy]
 
+  def show
+    @comment = Comment.find(params[:id])
+  end
+
   def new
     post = Post.find(params[:post_id])
     @comment = post.comments.new

@@ -1,0 +1,13 @@
+<div>
+  <p>
+    <%= button_to 'Back to post', :back, fallback_location: post_path(@comment.post), method: :get %>
+  </p>
+
+  <%= render 'comments/comment', comment: @comment %>
+
+  <ul style="list-style-type: none;">
+    <% @comment.child_comments.each do |child_comment| %>
+      <li><%= render 'comments/comment', comment: child_comment %></li>
+    <% end %>
+  </ul>
+</div>
