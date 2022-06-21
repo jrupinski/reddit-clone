@@ -4,6 +4,8 @@ RSpec.describe Comment, type: :model do
   context 'associations' do
     it { should belong_to(:author) }
     it { should belong_to(:post) }
+    it { should belong_to(:parent_comment).optional }
+    it { should have_many(:child_comments) }
   end
 
   context 'validations' do
