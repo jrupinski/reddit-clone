@@ -4,7 +4,8 @@ RSpec.describe Post, type: :model do
   context 'associations' do
     it { should belong_to(:author) }
     it { should have_many(:post_subs) }
-    it { should have_many(:subs).through(:post_subs) }
+    it { should have_many(:post_subs) }
+    it { should have_many(:votes) }
   end
 
   context 'validations' do
