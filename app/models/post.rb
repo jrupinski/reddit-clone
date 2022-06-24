@@ -26,4 +26,8 @@ class Post < ApplicationRecord
 
     comments_by_parent
   end
+
+  def user_score
+    votes.pluck(:value).sum
+  end
 end

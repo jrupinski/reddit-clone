@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Posts", type: :request do
   let(:existing_user) { create(:user) }
   let(:subs) { create_list(:sub, 3) }
+  let(:existing_post) { create(:post, author: existing_user, sub_ids: subs.pluck(:id)) }
 
   describe 'POST #create' do
     context 'when logged in' do
@@ -29,8 +30,6 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe 'PATCH #edit' do
-    let(:existing_post) { create(:post, author: existing_user, sub_ids: subs.pluck(:id)) }
-
     context 'when logged in as author' do
       # hacky login
       before(:each) do
@@ -65,8 +64,6 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe 'DELETE #destroy' do
-    let(:existing_post) { create(:post, author: existing_user, sub_ids: subs.pluck(:id)) }
-
     context 'when logged in as author' do
       # hacky login
       before(:each) do
@@ -96,6 +93,124 @@ RSpec.describe "Posts", type: :request do
       it 'redirects to login page' do
         delete post_path(existing_post)
         expect(response).to redirect_to(new_session_path)
+      end
+    end
+  end
+
+  describe 'Voting' do
+    describe 'POST #upvote' do
+      context 'when logged in (as author or different user)' do
+        # hacky login
+        before(:each) do
+          post session_path, params: { user: { username: existing_user.username, password: existing_user.password } }
+        end
+
+        context 'When not voted yet' do
+          it 'adds upvote to post' do
+            expect(existing_post.votes.count).to eq(0)
+            expect(existing_post.user_score).to eq(0)
+
+            expect { post upvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(1)
+              .and change { existing_post.user_score }.by(1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+        end
+
+        context 'when user already voted removes vote' do
+          it 'removes upvote from post' do
+            existing_post.votes.create(user: existing_user, value: 1)
+            expect(existing_post.votes.count).to eq(1)
+            expect(existing_post.user_score).to eq(1)
+
+            expect { post upvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(-1)
+              .and change { existing_post.user_score }.by(-1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+
+          it 'removes downvote from post' do
+            existing_post.votes.create(user: existing_user, value: -1)
+            expect(existing_post.votes.count).to eq(1)
+            expect(existing_post.user_score).to eq(-1)
+
+            expect { post upvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(-1)
+              .and change { existing_post.user_score }.by(1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+        end
+      end
+
+      context 'when not logged it' do
+        it 'redirects to login page' do
+          expect { post upvote_post_path(existing_post) }
+            .to change { existing_post.votes.count }.by(0)
+            .and change { existing_post.user_score }.by(0)
+
+          expect(response).to redirect_to(new_session_path)
+        end
+      end
+    end
+
+    describe 'POST #downvote' do
+      context 'when logged in (as author or different user)' do
+        # hacky login
+        before(:each) do
+          post session_path, params: { user: { username: existing_user.username, password: existing_user.password } }
+        end
+
+        context 'When not voted yet' do
+          it 'adds downvote to post' do
+            expect(existing_post.votes.count).to eq(0)
+            expect(existing_post.user_score).to eq(0)
+
+            expect { post downvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(1)
+              .and change { existing_post.user_score }.by(-1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+        end
+
+        context 'when user already voted removes vote' do
+          it 'removes upwnvote from post' do
+            existing_post.votes.create(user: existing_user, value: 1)
+            expect(existing_post.votes.count).to eq(1)
+            expect(existing_post.user_score).to eq(1)
+
+            expect { post downvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(-1)
+              .and change { existing_post.user_score }.by(-1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+
+          it 'removes downvote from post' do
+            existing_post.votes.create(user: existing_user, value: -1)
+            expect(existing_post.votes.count).to eq(1)
+            expect(existing_post.user_score).to eq(-1)
+
+            expect { post downvote_post_path(existing_post) }
+              .to change { existing_post.votes.count }.by(-1)
+              .and change { existing_post.user_score }.by(1)
+
+            expect(response).to redirect_to(existing_post)
+          end
+        end
+      end
+
+      context 'when not logged it' do
+        it 'redirects to login page' do
+          expect { post downvote_post_path(existing_post) }
+            .to change { existing_post.votes.count }.by(0)
+            .and change { existing_post.user_score }.by(0)
+
+          expect(response).to redirect_to(new_session_path)
+        end
       end
     end
   end
