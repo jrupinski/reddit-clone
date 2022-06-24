@@ -26,6 +26,6 @@ class Post < ApplicationRecord
   end
 
   def comments_sorted_by_user_score
-    sort_by_votes(collection: comments.includes(:author), direction: 'asc')
+    sort_by_votes(collection: comments.includes(:author), direction: 'desc')
   end
 end
