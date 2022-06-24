@@ -20,7 +20,7 @@ class Post < ApplicationRecord
   def comments_by_parent
     comments_by_parent = Hash.new { |hash, key| hash[key] = [] }
 
-    comments.includes(:author).each do |comment|
+    comments_sorted_by_user_score.each do |comment|
       comments_by_parent[comment.parent_comment_id] << comment
     end
 
@@ -29,5 +29,12 @@ class Post < ApplicationRecord
 
   def user_score
     votes.pluck(:value).sum
+  end
+
+  def comments_sorted_by_user_score
+    comments.includes(:author)
+            .left_joins(:votes)
+            .group(:id)
+            .order('SUM(votes.value) ASC')
   end
 end
