@@ -6,4 +6,8 @@ class Comment < ApplicationRecord
   has_many :votes, as: :votable, dependent: :destroy
 
   validates :content, presence: true
+
+  def user_score
+    votes.pluck(:value).sum
+  end
 end
