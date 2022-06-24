@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :require_current_user!, only: %i[new create edit update destroy]
+  include UserVotable
+
+  before_action :require_current_user!, except: :show
   before_action :require_author!, only: %i[edit update destroy]
 
   def show
@@ -48,6 +50,16 @@ class CommentsController < ApplicationController
       flash[:errors] = @comment.errors.full_messages
       redirect_to comment_path(@comment)
     end
+  end
+
+  def upvote
+    comment = Comment.find(params[:id])
+    add_vote(object: comment, value: 1)
+  end
+
+  def downvote
+    comment = Comment.find(params[:id])
+    add_vote(object: comment, value: -1)
   end
 
   private

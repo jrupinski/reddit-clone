@@ -1,21 +1,27 @@
 <%= button_to 'Back to subs list', subs_path, method: :get %>
-<p>Author: <%= link_to @post.author.username, user_path(@post.author) %></p>
-<p>Title: <%= @post.title %></p>
-<p>Url: <%= link_to @post.url, url_for(@post.url), :target => "_blank" %></p>
-<p>Content: <%= @post.content %></p>
-<p>Cross-posted in Subs:
+<div>
+  <p><b>Author:</b> <%= link_to @post.author.username, user_path(@post.author) %></p>
+  <p><b>Title:</b> <%= @post.title %></p>
+  <p><b>Url:</b> <%= link_to @post.url, url_for(@post.url), :target => "_blank" %></p>
+  <p><b>Post score:</b> <%= @post.user_score %></p>
+  <p><b>Content:</b> <%= @post.content %></p>
+  <p>Cross-posted in Subs:
+    <ul>
+      <% @post.sub_ids.each do |sub_id| %>
+        <li><%=link_to Sub.find(sub_id).name, sub_path(Sub.find(sub_id)) %></li>
+      <% end %>
+    </ul>
+  </p>
+
+  <ul style="list-style-type: none; padding: 0; margin-top: 10px; display: flex">
+    <li style= "padding-right: 5px"><%= button_to "Upvote", upvote_post_path(@post), method: :post %></li>
+    <li style= "padding-right: 5px"><%= button_to "Downvote", downvote_post_path(@post), method: :post %></li>
+  <% if @post.author == current_user %>
+      <li style= "padding-right: 5px"><%= button_to 'Edit post', edit_post_path(@post), method: :get %></li>
+      <li style= "padding-right: 5px"><%= button_to 'Delete post', post_path(@post), method: :delete %></li>
+  <% end %>
   <ul>
-    <% @post.sub_ids.each do |sub_id| %>
-      <li><%=link_to Sub.find(sub_id).name, sub_path(Sub.find(sub_id)) %></li>
-    <% end %>
-  </ul>
-</p>
-
-<% if @post.author == current_user %>
-  <%= button_to 'Edit post', edit_post_path(@post), method: :get %>
-  <%= button_to 'Delete post', post_path(@post), method: :delete %>
-<% end %>
-
+</div>
 <div style="border-style: dashed; display: inline-block; padding: 10px 10px 10px 10px;">
   <p>Add comment:</p>
   <%= render 'comments/form', comment: @post.comments.new, parent_comment: nil %>
@@ -24,7 +30,7 @@
 <p><b><%= "Comments(#{@post.comments.count})"%></b></p>
 
 <p>
-  <ul style="list-style-type: none;">
+  <ul style="list-style-type: none; padding: 0">
     <% comments_by_parent = @post.comments_by_parent%>
     <% top_level_comments = comments_by_parent[nil]%>
 

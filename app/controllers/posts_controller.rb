@@ -1,10 +1,11 @@
 class PostsController < ApplicationController
-  before_action :require_current_user!, only: %i[new create edit update destroy]
+  include UserVotable
+
+  before_action :require_current_user!, except: :show
   before_action :require_author!, only: %i[edit update destroy]
 
   def show
     @post = Post.find(params[:id])
-    @all_comments = @post.comments.includes(:author)
   end
 
   def new
@@ -49,6 +50,16 @@ class PostsController < ApplicationController
       flash[:errors] = @post.errors.full_messages
       redirect_to post_path(@post)
     end
+  end
+
+  def upvote
+    post = Post.find(params[:id])
+    add_vote(object: post, value: 1)
+  end
+
+  def downvote
+    post = Post.find(params[:id])
+    add_vote(object: post, value: -1)
   end
 
   private

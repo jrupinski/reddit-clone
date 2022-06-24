@@ -7,8 +7,17 @@ Rails.application.routes.draw do
   resources :users
   resources :subs
   resources :posts, except: :index do
+    member do
+      post 'upvote'
+      post 'downvote'
+    end
     resources :comments, only: :new
   end
-  resources :comments, except: %i[new index]
+  resources :comments, except: %i[new index] do
+    member do
+      post 'upvote'
+      post 'downvote'
+    end
+  end
   resource :session, only: %i[new create destroy]
 end
