@@ -25,6 +25,7 @@ class SubsController < ApplicationController
     @sub = current_user.subs.new(sub_params)
 
     if @sub.save
+      flash[:notice] = ['Sub created!']
       redirect_to sub_path(@sub)
     else
       flash[:errors] = @sub.errors.full_messages
@@ -40,6 +41,7 @@ class SubsController < ApplicationController
     @sub = Sub.find(params[:id])
 
     if @sub.update(sub_params)
+      flash[:notice] = ['Sub updated!']
       redirect_to sub_path(@sub)
     else
       flash[:errors] = @sub.errors.full_messages
@@ -51,7 +53,7 @@ class SubsController < ApplicationController
     @sub = Sub.find(params[:id])
 
     if @sub.destroy
-      flash[:notice] = 'Sub deleted!'
+      flash[:notice] = ['Sub deleted!']
       redirect_to subs_path
     else
       flash[:errors] = @sub.errors.full_messages

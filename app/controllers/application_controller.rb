@@ -12,10 +12,16 @@ class ApplicationController < ActionController::Base
 
   # filters for before_action
   def require_current_user!
-    redirect_to new_session_path unless current_user
+    return if current_user
+
+    flash[:notice] = ['Please login to perform action!']
+    redirect_to new_session_path
   end
 
   def require_no_current_user!
-    redirect_to user_path(current_user) if current_user
+    return unless current_user
+
+    flash[:notice] = ['Already logged in!']
+    redirect_to user_path(current_user)
   end
 end

@@ -14,11 +14,12 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.new(comment_params)
 
     if @comment.save
-      redirect_to post_path(@comment.post)
+      flash[:notice] = ['Comment created!']
     else
       flash[:errors] = @comment.errors.full_messages
-      redirect_to post_path(@comment.post)
     end
+
+    redirect_to post_path(@comment.post)
   end
 
   def edit
@@ -29,6 +30,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     if @comment.update(comment_params)
+      flash[:notice] = ['Comment updated!']
       redirect_to post_path(@comment.post)
     else
       flash[:errors] = @comment.errors.full_messages
@@ -40,7 +42,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     if @comment.destroy
-      flash[:notice] = 'Comment deleted!'
+      flash[:notice] = ['Comment deleted!']
       redirect_to post_path(@comment.post)
     else
       flash[:errors] = @comment.errors.full_messages

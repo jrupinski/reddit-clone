@@ -15,6 +15,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.new(post_params)
 
     if @post.save
+      flash[:notice] = ['Post created!']
       redirect_to post_path(@post)
     else
       flash[:errors] = @post.errors.full_messages
@@ -30,6 +31,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.update(post_params)
+      flash[:notice] = ['Post updated!']
       redirect_to post_path(@post)
     else
       flash[:errors] = @post.errors.full_messages
@@ -41,7 +43,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.destroy
-      flash[:notice] = 'Post deleted!'
+      flash[:notice] = ['Post deleted!']
       redirect_to user_path(current_user)
     else
       flash[:errors] = @post.errors.full_messages
