@@ -52,3 +52,15 @@ Comment.all.each do |comment|
   end
 end
 
+# Votes
+User.all.each do |user|
+  Comment.all.each do |comment|
+    random_vote = [-1, 1].sample
+    FactoryBot.create(:vote, votable: comment, user:, value: random_vote)
+  end
+
+  Post.all.each do |post|
+    random_vote = [-1, 1].sample
+    FactoryBot.create(:vote, votable: post, user:, value: random_vote)
+  end
+end
