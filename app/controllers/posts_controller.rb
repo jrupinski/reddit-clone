@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  include UserVotable
+
   before_action :require_current_user!, except: :show
   before_action :require_author!, only: %i[edit update destroy]
 
@@ -51,11 +53,13 @@ class PostsController < ApplicationController
   end
 
   def upvote
-    add_vote(value: 1)
+    post = Post.find(params[:id])
+    add_vote(object: post, value: 1)
   end
 
   def downvote
-    add_vote(value: -1)
+    post = Post.find(params[:id])
+    add_vote(object: post, value: -1)
   end
 
   private
@@ -67,22 +71,5 @@ class PostsController < ApplicationController
   def require_author!
     post = Post.find(params[:id])
     redirect_to user_path(current_user) unless current_user == post.author
-  end
-
-  def add_vote(value:)
-    @post = Post.find(params[:id])
-    vote = @post.votes.find_or_initialize_by(user: current_user)
-
-    if vote.persisted?
-      vote.destroy
-      flash[:notice] = ['Vote removed']
-    elsif vote.update(value:)
-      notice_value = (value.positive? ? 'Upvote' : 'Downvote')
-      flash[:notice] = ["#{notice_value} saved!"]
-    else
-      flash[:errors] = vote.errors.full_messages
-    end
-
-    redirect_back(fallback_location: post_path(@post))
   end
 end

@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  include UserVotable
+
   before_action :require_current_user!, except: :show
   before_action :require_author!, only: %i[edit update destroy]
 
@@ -51,11 +53,13 @@ class CommentsController < ApplicationController
   end
 
   def upvote
-    add_vote(value: 1)
+    comment = Comment.find(params[:id])
+    add_vote(object: comment, value: 1)
   end
 
   def downvote
-    add_vote(value: -1)
+    comment = Comment.find(params[:id])
+    add_vote(object: comment, value: -1)
   end
 
   private
@@ -67,22 +71,5 @@ class CommentsController < ApplicationController
   def require_author!
     comment = Comment.find(params[:id])
     redirect_to post_path(comment.post) unless current_user == comment.author
-  end
-
-  def add_vote(value:)
-    @comment = Comment.find(params[:id])
-    vote = @comment.votes.find_or_initialize_by(user: current_user)
-
-    if vote.persisted?
-      vote.destroy
-      flash[:notice] = ['Vote removed']
-    elsif vote.update(value:)
-      notice_value = (value.positive? ? 'Upvote' : 'Downvote')
-      flash[:notice] = ["#{notice_value} saved!"]
-    else
-      flash[:errors] = vote.errors.full_messages
-    end
-
-    redirect_back(fallback_location: comment_path(@comment))
   end
 end
