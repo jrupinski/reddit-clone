@@ -1,15 +1,13 @@
 class Post < ApplicationRecord
+  include Votable
+  include Sortable
+
   belongs_to :author, class_name: 'User'
   has_many :post_subs, dependent: :destroy
   has_many :subs, through: :post_subs
   has_many :comments, dependent: :destroy
-  has_many :votes, as: :votable, dependent: :destroy
 
   validates :title, :subs, presence: true
-
-  def top_level_comments
-    comments.where(parent_comment_id: nil)
-  end
 
   #
   # Returns a hash of comments, and the parent comment they are assigned to.
@@ -27,14 +25,7 @@ class Post < ApplicationRecord
     comments_by_parent
   end
 
-  def user_score
-    votes.pluck(:value).sum
-  end
-
   def comments_sorted_by_user_score
-    comments.includes(:author)
-            .left_joins(:votes)
-            .group(:id)
-            .order('SUM(votes.value) ASC')
+    sort_by_votes(collection: comments.includes(:author), direction: 'asc')
   end
 end
