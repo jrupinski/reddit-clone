@@ -9,11 +9,22 @@
 <% end %>
 <%= button_to 'New post', new_post_path, method: :get %>
 
-<ul>
+<ul style="list-style-type: none; padding: 0;">
   <% posts.each do |post| %>
-    <li><%=link_to post.title, post_path(post) %></li>
-    <% if sub.moderator == current_user || post.author == current_user %>
-      <%= button_to 'Delete post', post_path(post), method: :delete %>
-    <% end%>
+    <div style="border-style: solid; padding: 5px; margin: 10px 10px 10px 0;">
+      <li>
+        <%=link_to post.title, post_path(post) %>
+        <p><b>Post score:</b> <%= post.user_score %></p>
+
+        <ul style="list-style-type: none; padding: 0; margin-top: 10px; display: flex">
+          <li style= "padding-right: 5px"><%= button_to "Upvote", upvote_post_path(post), method: :post %></li>
+          <li style= "padding-right: 5px"><%= button_to "Downvote", downvote_post_path(post), method: :post %></li>
+        <% if sub.moderator == current_user || post.author == current_user %>
+            <li style= "padding-right: 5px"><%= button_to 'Edit post', edit_post_path(post), method: :get %></li>
+            <li style= "padding-right: 5px"><%= button_to 'Delete post', post_path(post), method: :delete %></li>
+        <% end %>
+        </ul>
+      </li>
+    </div>
   <% end %>
 </ul>
