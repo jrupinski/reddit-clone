@@ -11,6 +11,7 @@ class SessionsController < ApplicationController
 
     if @user
       login_user!(@user)
+      flash[:notice] = ['Login successful!']
       redirect_to user_path(@user)
     else
       flash[:errors] = ['Invalid credentials']
@@ -21,6 +22,7 @@ class SessionsController < ApplicationController
   def destroy
     current_user.reset_session_token!
     session[:session_token] = nil
+    flash[:notice] = ['Logout successful!']
     redirect_to new_session_path
   end
 

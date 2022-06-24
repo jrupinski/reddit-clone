@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
     if @user.save
       login_user!(@user)
+      flash[:notice] = ['Account created!']
       redirect_to user_path(@user)
     else
       flash[:errors] = @user.errors.full_messages
@@ -30,6 +31,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update(user_params)
+      flash[:notice] = ['Account updated!']
       redirect_to user_path(@user)
     else
       flash[:errors] = @user.errors.full_messages
