@@ -11,7 +11,11 @@ class SubsController < ApplicationController
     @sub = Sub.find(params[:id])
     # Very deliberate edge case for avoiding n+1 queries while logged out
     # AND avoiding unnecessary eager loading while logged in
-    posts = @sub.posts.includes(:author)
+    posts = @sub.posts
+                .includes(:author)
+                .left_joins(:votes)
+                .group(:id)
+                .order('SUM(votes.value) DESC')
 
     render :show, locals: { sub: @sub, posts: }
   end
