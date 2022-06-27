@@ -8,7 +8,7 @@ class SubsController < ApplicationController
   end
 
   def show
-    @sub = Sub.find(params[:id])
+    @sub = Sub.friendly.find(params[:id])
     posts = @sub.posts_sorted_by_user_score
 
     render :show, locals: { sub: @sub, posts: }
@@ -32,11 +32,11 @@ class SubsController < ApplicationController
   end
 
   def edit
-    @sub = Sub.find(params[:id])
+    @sub = Sub.friendly.find(params[:id])
   end
 
   def update
-    @sub = Sub.find(params[:id])
+    @sub = Sub.friendly.find(params[:id])
 
     if @sub.update(sub_params)
       flash[:notice] = ['Sub updated!']
@@ -48,7 +48,7 @@ class SubsController < ApplicationController
   end
 
   def destroy
-    @sub = Sub.find(params[:id])
+    @sub = Sub.friendly.find(params[:id])
 
     if @sub.destroy
       flash[:notice] = ['Sub deleted!']
@@ -66,7 +66,7 @@ class SubsController < ApplicationController
   end
 
   def require_moderator!
-    sub = Sub.find(params[:id])
+    sub = Sub.friendly.find(params[:id])
     redirect_to subs_path unless current_user == sub.moderator
   end
 end

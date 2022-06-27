@@ -1,5 +1,7 @@
 class Sub < ApplicationRecord
   include Sortable
+  extend FriendlyId
+  friendly_id :name, use: :slugged
 
   belongs_to :moderator, class_name: 'User'
   has_many :post_subs, dependent: :destroy
