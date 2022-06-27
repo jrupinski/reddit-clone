@@ -19,12 +19,13 @@ end
 Sub.all.each do |sub|
   random_user_id = rand(1..User.count)
   sub_ids = [sub.id]
-  2.times do
+  # Cross post to 5 different subs
+  5.times do
     random_sub_id = rand(1..Sub.count)
     sub_ids << random_sub_id
   end
 
-  posts = FactoryBot.build_list(:post, 3, sub_ids:, author: User.find(random_user_id))
+  posts = FactoryBot.build_list(:post, 15, sub_ids:, author: User.find(random_user_id))
   # workaround for duplicate keys for post_subs
   posts.each do |post|
     new_post = Post.new
@@ -37,16 +38,16 @@ Sub.all.each do |sub|
   end
 end
 
-# Comments
+# Comments with replies
 Post.all.each do |post|
   random_user_id = rand(1..User.count)
   FactoryBot.create_list(:comment, 5, post:, author: User.find(random_user_id))
 end
 
-# Nested Comments
+# Nested Comments (aka replies)
 Comment.all.each do |comment|
   random_user_id = rand(1..User.count)
-  first_level_deep_comments = FactoryBot.create_list(:comment, 2, parent_comment_id: comment.id, post: comment.post, author: User.find(random_user_id))
+  first_level_deep_comments = FactoryBot.create_list(:comment, 5, parent_comment_id: comment.id, post: comment.post, author: User.find(random_user_id))
   first_level_deep_comments.each do |comment|
     FactoryBot.create(:comment, parent_comment_id: comment.id, post: comment.post, author: User.find(random_user_id))
   end
@@ -63,4 +64,15 @@ User.all.each do |user|
     random_vote = [-1, 1].sample
     FactoryBot.create(:vote, votable: post, user:, value: random_vote)
   end
+end
+
+# Dummy empty Subs
+User.all.each do |user|
+  FactoryBot.create_list(:sub, 10, moderator: user)
+end
+
+# Comments with no replies
+Post.all.each do |post|
+  random_user_id = rand(1..User.count)
+  FactoryBot.create_list(:comment, 20, post:, author: User.find(random_user_id))
 end
