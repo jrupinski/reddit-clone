@@ -9,9 +9,9 @@ class SubsController < ApplicationController
 
   def show
     @sub = Sub.friendly.find(params[:id])
-    posts = @sub.posts_sorted_by_user_score
+    @posts = @sub.posts_sorted_by_user_score.page params[:page]
 
-    render :show, locals: { sub: @sub, posts: }
+    render :show
   end
 
   def new
