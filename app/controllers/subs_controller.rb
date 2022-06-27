@@ -3,8 +3,8 @@ class SubsController < ApplicationController
   before_action :require_moderator!, only: %i[edit update destroy]
 
   def index
-    @subs = Sub.all
-    render :index, locals: { subs: @subs }
+    @subs = Sub.all.page params[:page]
+    render :index
   end
 
   def show
