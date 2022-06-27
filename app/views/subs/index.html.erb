@@ -2,7 +2,8 @@ Available subs
 <%= button_to 'New sub', new_sub_path, method: :get %>
 
 <ul>
-  <% subs.each do |sub| %>
+  <% @subs.each do |sub| %>
     <li><%=link_to sub.name, sub_path(sub) %></li>
   <% end %>
 </ul>
+<%= paginate @subs %>

@@ -51,6 +51,9 @@ gem "sassc-rails"
 # For creating user-friendly URLs
 gem 'friendly_id', '~> 5.4.0'
 
+# For pagination
+gem 'kaminari'
+
 # For generating fake seeds data
 gem 'factory_bot_rails'
 gem 'faker'

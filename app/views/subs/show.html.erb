@@ -1,16 +1,16 @@
 <%= button_to 'Back to subs list', subs_path, method: :get %>
-<h1><%= sub.name %></h1>
-<p>Description: <%= sub.description%></p>
-<p>Moderator: <%= link_to sub.moderator.username, user_path(sub.moderator) %></p>
+<h1><%= @sub.name %></h1>
+<p>Description: <%= @sub.description%></p>
+<p>Moderator: <%= link_to @sub.moderator.username, user_path(@sub.moderator) %></p>
 
-<% if sub.moderator == current_user %>
+<% if @sub.moderator == current_user %>
   <%= button_to 'Edit sub', edit_sub_path(sub), method: :get %>
   <%= button_to 'Delete sub', sub_path(sub), method: :delete %>
 <% end %>
 <%= button_to 'New post', new_post_path, method: :get %>
 
 <ul style="list-style-type: none; padding: 0;">
-  <% posts.each do |post| %>
+  <% @posts.each do |post| %>
     <div style="border-style: solid; padding: 5px; margin: 10px 10px 10px 0;">
       <li>
         <%=link_to post.title, post_path(post) %>
@@ -19,7 +19,7 @@
         <ul style="list-style-type: none; padding: 0; margin-top: 10px; display: flex">
           <li style= "padding-right: 5px"><%= button_to "Upvote", upvote_post_path(post), method: :post %></li>
           <li style= "padding-right: 5px"><%= button_to "Downvote", downvote_post_path(post), method: :post %></li>
-        <% if sub.moderator == current_user || post.author == current_user %>
+        <% if @sub.moderator == current_user || post.author == current_user %>
             <li style= "padding-right: 5px"><%= button_to 'Edit post', edit_post_path(post), method: :get %></li>
             <li style= "padding-right: 5px"><%= button_to 'Delete post', post_path(post), method: :delete %></li>
         <% end %>
@@ -27,4 +27,6 @@
       </li>
     </div>
   <% end %>
+
+  <%= paginate @posts %>
 </ul>
