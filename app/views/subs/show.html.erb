@@ -4,8 +4,8 @@
 <p>Moderator: <%= link_to @sub.moderator.username, user_path(@sub.moderator) %></p>
 
 <% if @sub.moderator == current_user %>
-  <%= button_to 'Edit sub', edit_sub_path(sub), method: :get %>
-  <%= button_to 'Delete sub', sub_path(sub), method: :delete %>
+  <%= button_to 'Edit sub', edit_sub_path(@sub), method: :get %>
+  <%= button_to 'Delete sub', sub_path(@sub), method: :delete %>
 <% end %>
 <%= button_to 'New post', new_post_path, method: :get %>
 
