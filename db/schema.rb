@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_23_155011) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_27_145430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_23_155011) do
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["parent_comment_id"], name: "index_comments_on_parent_comment_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "post_subs", force: :cascade do |t|
@@ -43,7 +54,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_23_155011) do
     t.bigint "author_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["slug"], name: "index_posts_on_slug", unique: true
   end
 
   create_table "subs", force: :cascade do |t|
@@ -52,8 +65,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_23_155011) do
     t.bigint "moderator_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["moderator_id"], name: "index_subs_on_moderator_id"
     t.index ["name"], name: "index_subs_on_name", unique: true
+    t.index ["slug"], name: "index_subs_on_slug", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,8 +78,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_23_155011) do
     t.string "session_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
+    t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
