@@ -3,6 +3,8 @@ class Sub < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   belongs_to :moderator, class_name: 'User'
   has_many :post_subs, dependent: :destroy
   has_many :posts, through: :post_subs
